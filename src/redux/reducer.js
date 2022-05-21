@@ -21,7 +21,8 @@ const intialState = {
 function reducer(state = intialState, action) {
     console.log("redux/reducer file", action.type, action?.payload)
     switch (action.type) {
-        case "login": return { ...state, users: [...state?.users, action.payload], loggedin: true, user: action.payload }
+        case "login": return { ...state, user: action.payload, loggedin: true }
+        case "signup": return { ...state, users: action.payload }
         case "users": return { ...state, users: action.payload }
         case "search": return { ...state, search: action.payload }
         case "col": return { ...state, col: action.payload, order: !state?.order }

@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
+
 function Login(props) {
     return <div className='form'>
-        <h1>login</h1>
+        <h1>Login</h1>
         <div>
-            <p>username</p>
-            <input placeholder='username'/>
+            <p>email</p>
+            <input value={ob.email} onChange={handleChange} placeholder='email' />
         </div>
-
         <div>
             <p>password</p>
-            <input placeholder='password'/>
+            <input value={ob.password} onChange={handleChange} placeholder='password' />
         </div>
 
         <div>
-            <button>login</button>
+            <button onClick={handleClick}>Login</button>
         </div>
 
 
