@@ -28,6 +28,12 @@ function App(props) {
             .then(d => {
                 dispatch({ type: "tags", payload: d.data })
             })
+            
+        axios.get("http://localhost:4000/users")
+            .then(d => {
+                dispatch({ type: "users", payload: d.data })
+            })
+
 
     }
 
