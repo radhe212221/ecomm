@@ -15,13 +15,17 @@ const intialState = {
     user: null,
     col: "id",
     order: true,
-    tagname: ""
+    tagname: "",//for left side men (2),
+    search: "",
 }
 function reducer(state = intialState, action) {
-    console.log("redux/reducer file", action.type,action?.payload)
+    console.log("redux/reducer file", action.type, action?.payload)
     switch (action.type) {
-        case "products":return {...state,products:action.payload}
-        case "tags":return {...state,tags:action.payload}
+        case "search": return { ...state, search: action.payload }
+        case "col": return { ...state, col: action.payload, order: !state?.order }
+        case "tagname": return { ...state, tagname: action.payload }
+        case "products": return { ...state, products: action.payload }
+        case "tags": return { ...state, tags: action.payload }
         default: return state
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 function Signup(props) {
-    return <div>
+    return <div className='form'>
         <h1>Signup</h1>
         <div>
             <p>name</p>

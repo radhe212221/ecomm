@@ -1,19 +1,36 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 function Home(props) {
-    const { tags, filters, col, products } = useSelector(_state => _state)
-
+    const { loggedin, tags, filters, col, products, search, tagname, order } = useSelector(_state => _state)
+    const dispatch = useDispatch()
     const handleFilter = x => {
-        console.log("clicked on filter button", x)
+        // console.log("clicked on filter button", x)
+        dispatch({ type: "col", payload: x })
     }
 
     const handleTag = x => {
-        console.log("handleTag", x)
+        // console.log("handleTag", x)
+        dispatch({ type: "tagname", payload: x })
     }
+
+    const handleChange = e => {
+        dispatch({ type: "search", payload: e.target.value })
+        // console.log(e.target.value)
+    }
+    const handleClearAll = () => {
+        dispatch({ type: "tagname", payload: "" })
+        dispatch({ type: "search", payload: "" })
+    }
+
+    const _products = products
+        .filter(x => x?.tags.startsWith(tagname))
+        .filter(x => Object.values(x).join('').includes(search))
+        .sort((x, y) => order ? (x[col] - y[col]) : (y[col] - x[col]))
+
 
     return <main>
         <div className='left'>
-            {tags.map(x => <p key={x.t} onClick={() => handleTag(x.t)}>{x.t}
+            {tags.map(x => <p className={x.t === tagname ? "active" : ""} key={x.t} onClick={() => handleTag(x.t)}>{x.t}
                 <span>({x.c})</span>
             </p>)}
         </div>
@@ -29,10 +46,11 @@ function Home(props) {
                         {x}
                     </button>
                 ))}
-                <input placeholder='search' />
+                <input placeholder='search' value={search} onChange={handleChange} />
+                <span onClick={handleClearAll} className='clear-filters'> x clear filters</span>
             </div>
             <div className='products'>
-                {products?.map(x => <div key={x.name} className='item'>
+                {_products?.map(x => <div key={x.name} className='item'>
                     <img width={100} height={100} src={x.image} />
                     <div className='title'>{x.title}</div>
                     <div className='desc'>{x.description}</div>
@@ -47,9 +65,9 @@ function Home(props) {
                     </div>
                     <div className='discount'>{x.discount} % off</div>
                     <div className='tags'>{x.tags}</div>
-                    <div className='cart-btn'>
-                        <i className='fa fa-shopping-cart'></i>
-                    </div>
+                    {loggedin && <div className='cart-btn'>
+                        <i className='fa fa-shopping-cart'></i> (0)
+                    </div>}
                 </div>)}
             </div>
         </div>

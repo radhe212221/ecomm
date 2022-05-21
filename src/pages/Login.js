@@ -1,6 +1,6 @@
 import React from 'react'
 function Login(props) {
-    return <div>
+    return <div className='form'>
         <h1>login</h1>
         <div>
             <p>username</p>
