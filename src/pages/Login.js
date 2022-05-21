@@ -1,6 +1,19 @@
 import React, { useState } from 'react'
 
 function Login(props) {
+
+    const [ob, setob] = useState({
+        email: "",
+        password: ""
+    })
+    const handleChange = e => {
+        let { value, placeholder } = e.target
+        setob({ ...ob, [placeholder]: value })
+    }
+
+    const handleClick = () => {
+
+    }
     return <div className='form'>
         <h1>Login</h1>
         <div>
