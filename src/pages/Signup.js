@@ -1,10 +1,12 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 function Signup(props) {
-    let history = useHistory();
+    const navigate = useNavigate();
+
 
     const dispatch = useDispatch()
     const { users } = useSelector(s => s)
@@ -22,14 +24,14 @@ function Signup(props) {
     const handleClick = () => {
         if (users.some(x => x.email === ob.email && x.password === ob.password)) {
             alert("already exists")
-            history.push("/login")
+            navigate("/login")
 
         }
         else {
             axios.post("http://localhost:4000/users", ob)
                 .then(d => {
                     dispatch({ type: "login", payload: ob })
-                    history.push("/")
+                    navigate("/")
                 })
                 .catch(e => {
                     alert(e.message)
