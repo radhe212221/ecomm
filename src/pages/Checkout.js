@@ -9,59 +9,47 @@ function Checkout(props) {
 
 
     const dispatch = useDispatch()
-    const { users } = useSelector(s => s)
-    const [ob, setob] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-    })
+    const { users, user, cart, orders } = useSelector(s => s)
+    const [ob, setob] = useState(user)
     const handleChange = e => {
         let { value, placeholder } = e.target
         setob({ ...ob, [placeholder]: value })
     }
 
-    const handleClick = () => {
-        if (users.some(x => x.email === ob.email && x.password === ob.password)) {
-            alert("already exists")
-            navigate("/login")
+    const handleClick = async () => {
+        let mycart = cart.filter(x => x.uid === user.id)
+        // for (let i = 0; i < mycart.length; i++) {
+        //     let payload = mycart[i]
+        //     let { id } = payload
+        // }
+        dispatch({type:"orders",payload:[...orders,...mycart]})
+        dispatch({type:"cart",payload:cart.filter(x=>x.uid!==user.id)})
 
-        }
-        else {
-            axios.post("http://localhost:4000/users", ob)
-                .then(d => {
-                    dispatch({ type: "login", payload: ob })
-                    navigate("/")
-                })
-                .catch(e => {
-                    alert(e.message)
-                })
-        }
     }
     return <div className='form'>
-        <h1>Signup</h1>
+        <h1>Checkout</h1>
         <div>
             <p>name</p>
-            <input value={ob.name} onChange={handleChange} placeholder='name' />
+            <input readOnly={true} value={ob.name} onChange={handleChange} placeholder='name' />
         </div>
 
         <div>
             <p>email</p>
-            <input value={ob.email} onChange={handleChange} placeholder='email' />
+            <input readOnly={true} value={ob.email} onChange={handleChange} placeholder='email' />
         </div>
         <div>
             <p>phone</p>
-            <input value={ob.phone} onChange={handleChange} placeholder='phone' />
+            <input readOnly={true} value={ob.phone} onChange={handleChange} placeholder='phone' />
         </div>
 
 
         <div>
             <p>password</p>
-            <input value={ob.password} onChange={handleChange} placeholder='password' />
+            <input readOnly={true} value={ob.password} onChange={handleChange} placeholder='password' />
         </div>
 
         <div>
-            <button onClick={handleClick}>Signup</button>
+            <button onClick={handleClick}>Checkout</button>
         </div>
 
 
