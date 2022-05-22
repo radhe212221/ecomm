@@ -1,12 +1,2 @@
-# pages
-# home
-# login
-# signup
-# cart
-# order
-# profile
-# logout
-# err
-# view
-
-# home
+# live url
+## https://radheshyam1-1cf35.web.app/
