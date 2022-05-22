@@ -1,6 +1,7 @@
+import data from './data'
 const intialState = {
-    products: [],
-    tags: [],
+    products: data.products,
+    tags: data.tags,
     filters: [
         "id",
         "old",
@@ -8,9 +9,9 @@ const intialState = {
         "rating",
         "discount"
     ],
-    users: [],
-    cart: [],
-    orders: [],
+    users: data.users,
+    cart: data.cart,
+    orders: data.orders,
     loggedin: false,
     user: null,
     col: "id",
@@ -32,6 +33,7 @@ function reducer(state = intialState, action) {
         case "tagname": return { ...state, tagname: action.payload }
         case "products": return { ...state, products: action.payload }
         case "tags": return { ...state, tags: action.payload }
+        case "logout": return { ...state, user: null, loggedin: false, msg: "logged out" }
         case "msg": return { ...state, msg: action.payload }
         default: return state
     }

@@ -7,20 +7,14 @@ function Cart(props) {
     const mycart = cart.filter(x => x.uid === user.id)
 
     const handleQty = (id, qty) => {
-        axios.patch(`http://localhost:4000/cart/${id}`, { qty })
-            .then(d => {
-                let payload = cart.map(x => x.id === id ? d.data : x)
-                dispatch({ type: "cart", payload })
-                dispatch({ type: "msg", payload: "qty updated to " + qty })
-            })
+        let payload = cart.map(x => x.id === id ? { ...x, qty } : x)
+        dispatch({ type: "cart", payload })
+        dispatch({ type: "msg", payload: "qty updated to " + qty })
     }
 
     const handleRemove = id => {
-        axios.delete(`http://localhost:4000/cart/${id}`)
-            .then(d => {
-                dispatch({ type: "cart", payload: cart.filter(x => x.id !== id) })
-                dispatch({ type: "msg", payload: "removed from cart" })
-            })
+        dispatch({ type: "cart", payload: cart.filter(x => x.id !== id) })
+        dispatch({ type: "msg", payload: "removed from cart" })
     }
     return <div className='container'>
         <h1>total cart ({mycart.length})</h1>

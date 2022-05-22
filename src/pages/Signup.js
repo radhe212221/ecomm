@@ -23,19 +23,15 @@ function Signup(props) {
 
     const handleClick = () => {
         if (users.some(x => x.email === ob.email && x.password === ob.password)) {
-            alert("already exists")
+            dispatch({ type: "msg", payload: "already exists" })
             navigate("/login")
 
         }
         else {
-            axios.post("http://localhost:4000/users", ob)
-                .then(d => {
-                    dispatch({ type: "login", payload: ob })
-                    navigate("/")
-                })
-                .catch(e => {
-                    alert(e.message)
-                })
+            let payload = [...users, { ...ob, id: users?.length + 1 }]
+            dispatch({ type: "users", payload })
+            dispatch({ type: "msg", payload: "signup successfull" })
+            navigate("/login")
         }
     }
     return <div className='form'>

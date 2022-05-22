@@ -37,13 +37,9 @@ function Home(props) {
             let data = _cart.find(x => x.uid === _user.id && _product.id === x.pid)
             let { id, qty } = data
             qty = qty + 1
-            axios.patch(`http://localhost:4000/cart/${id}`, { qty })
-                .then(d => {
-                    // console.log(d.data)
-                    let payload = cart.map(x => x.id === id ? (d.data) : x)
-                    dispatch({ type: "cart", payload })
-                    dispatch({ type: "msg", payload: "cart updated" })
-                })
+            let payload = cart.map(x => x.id === id ? ({ ...x, qty }) : x)
+            dispatch({ type: "cart", payload })
+            dispatch({ type: "msg", payload: "cart updated" })
         }
         else {
             let uid = _user.id
@@ -54,13 +50,10 @@ function Home(props) {
                 qty: 1,
                 uid,
                 pid,
+                id: cart.length + 1
             }
-            delete payload["id"]
-            axios.post("http://localhost:4000/cart", payload)
-                .then(d => {
-                    dispatch({ type: "cart", payload: [...cart, d.data] })
-                    dispatch({ type: "msg", payload: "added to cart" })
-                })
+            dispatch({ type: "cart", payload: [...cart, payload] })
+            dispatch({ type: "msg", payload: "added to cart" })
         }
     }
 

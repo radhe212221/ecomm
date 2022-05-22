@@ -16,40 +16,6 @@ import ErrorPage from './components/ErrorPage';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 function App(props) {
-
-    const dispatch = useDispatch()
-
-    const boot = () => {
-        axios.get("http://localhost:4000/products")
-            .then(d => {
-                dispatch({ type: "products", payload: d.data })
-            })
-
-        axios.get("http://localhost:4000/tags")
-            .then(d => {
-                dispatch({ type: "tags", payload: d.data })
-            })
-
-        axios.get("http://localhost:4000/users")
-            .then(d => {
-                dispatch({ type: "users", payload: d.data })
-            })
-
-        axios.get("http://localhost:4000/cart")
-            .then(d => {
-                dispatch({ type: "cart", payload: d.data })
-            })
-
-        axios.get("http://localhost:4000/orders")
-            .then(d => {
-                dispatch({ type: "orders", payload: d.data })
-            })
-
-
-
-    }
-
-    useEffect(boot, [])
     return <BrowserRouter>
         <TopBar />
         <Header />
