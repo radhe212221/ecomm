@@ -1,7 +1,8 @@
+import axios from 'axios'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 function Home(props) {
-    const { loggedin, tags, filters, col, products, search, tagname, order } = useSelector(_state => _state)
+    const { loggedin, tags, filters, col, products, search, tagname, order, cart, user } = useSelector(_state => _state)
     const dispatch = useDispatch()
     const handleFilter = x => {
         // console.log("clicked on filter button", x)
@@ -22,11 +23,46 @@ function Home(props) {
         dispatch({ type: "search", payload: "" })
     }
 
+    const getQty = (pid, uid) => {
+        return cart?.find(x => x.pid === pid && x.uid === uid)?.qty || 0
+    }
     const _products = products
         .filter(x => x?.tags.startsWith(tagname))
         .filter(x => Object.values(x).join('').includes(search))
         .sort((x, y) => order ? (x[col] - y[col]) : (y[col] - x[col]))
 
+    const handleCart = (_product, _user, _cart) => {
+        let condition = _cart.some(x => x.uid === _user.id && _product.id === x.pid)
+        if (condition) {
+            let data = _cart.find(x => x.uid === _user.id && _product.id === x.pid)
+            let { id, qty } = data
+            qty = qty + 1
+            axios.patch(`http://localhost:4000/cart/${id}`, { qty })
+                .then(d => {
+                    // console.log(d.data)
+                    let payload = cart.map(x => x.id === id ? (d.data) : x)
+                    dispatch({ type: "cart", payload })
+                    dispatch({ type: "msg", payload: "cart updated" })
+                })
+        }
+        else {
+            let uid = _user.id
+            let pid = _product.id
+            let payload = {
+                ...user,
+                ..._product,
+                qty: 1,
+                uid,
+                pid,
+            }
+            delete payload["id"]
+            axios.post("http://localhost:4000/cart", payload)
+                .then(d => {
+                    dispatch({ type: "cart", payload: [...cart, d.data] })
+                    dispatch({ type: "msg", payload: "added to cart" })
+                })
+        }
+    }
 
     return <main>
         <div className='left'>
@@ -65,8 +101,8 @@ function Home(props) {
                     </div>
                     <div className='discount'>{x.discount} % off</div>
                     <div className='tags'>{x.tags}</div>
-                    {loggedin && <div className='cart-btn'>
-                        <i className='fa fa-shopping-cart'></i> (0)
+                    {loggedin && <div onClick={() => handleCart(x, user, cart)} className='cart-btn'>
+                        <i className='fa fa-shopping-cart'></i> ({getQty(x.id, user.id)})
                     </div>}
                 </div>)}
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header';
+import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -28,17 +29,29 @@ function App(props) {
             .then(d => {
                 dispatch({ type: "tags", payload: d.data })
             })
-            
+
         axios.get("http://localhost:4000/users")
             .then(d => {
                 dispatch({ type: "users", payload: d.data })
             })
+
+        axios.get("http://localhost:4000/cart")
+            .then(d => {
+                dispatch({ type: "cart", payload: d.data })
+            })
+
+        axios.get("http://localhost:4000/orders")
+            .then(d => {
+                dispatch({ type: "orders", payload: d.data })
+            })
+
 
 
     }
 
     useEffect(boot, [])
     return <BrowserRouter>
+        <TopBar />
         <Header />
 
         <Routes>

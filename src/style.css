@@ -50,6 +50,12 @@ main {
     height: 80vh;
     display: flex;
 }
+.container
+{
+    min-height: 70vh;
+    overflow: auto;
+    padding: 2%;
+}
 
 
 main .left {
@@ -129,6 +135,7 @@ main .right .products .item .tags {
 }
 
 main .right .products .item .cart-btn {
+    cursor: pointer;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -168,4 +175,47 @@ main .right .products .item .discount {
     background-color: black;
     color:white;
     margin-top: 10px;
+}
+
+
+nav
+{
+    padding: 10px;
+    background-color: silver;
+    text-align: center;
+    position: sticky;
+    top:0;
+}
+
+
+table{
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    margin-top: 2%;
+}
+
+thead
+{
+    background-color: black;
+    color:white;
+    position: sticky;
+    top:0;
+}
+
+.tbl
+{
+    height: 50vh;
+    overflow: auto;
+    box-shadow: 0 10px 10px black;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: red;
+}
+::-webkit-scrollbar-thumb
+{
+    background-color: lime;
 }
